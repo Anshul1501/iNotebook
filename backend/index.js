@@ -8,6 +8,8 @@ connectToMongo();
 const app = express()
 const port = 3000
 
+app.use(express.json()) //to use request.body 
+
 // Define a route for the root path ('/')
 //avilabel routes
 
