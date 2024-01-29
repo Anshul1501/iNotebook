@@ -3,7 +3,7 @@ const mongoURI = "mongodb://localhost:27017";
 
 async function connectToMongo() {
     await mongoose
-        .connect("mongodb://localhost:27017/")
+        .connect(mongoURI)
         .then(() => console.log("Connected to Mongo Successfully"))
         .catch((err) => console.log(err));
 }

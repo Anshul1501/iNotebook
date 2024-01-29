@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 
 const NotesSchema = new Schema({
     title: {
-        type: string,
+        type: String,
         required: true
     },
     discription: {
-        type: string,
+        type: String,
         required: true
     },
     tag: {
-        type: string,
+        type: String,
         default: "General"
     },
     date: {
-        type: string,
+        type: String,
         default: Date.now
     },
 });
