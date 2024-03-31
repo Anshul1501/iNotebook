@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const NotesSchema = new Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId, //it's like a forgin key
+        ref: 'user' // reference object
+    },
     title: {
         type: String,
         required: true
     },
-    discription: {
+    description: {
         type: String,
         required: true
     },
