@@ -94,7 +94,7 @@ router.put("/updatenote/:id", fetchUser, async(req, res) => {
     }
 });
 
-// Delete existing note: DELETE "/api/notes/deletenote/:id". Login required
+// ROUTE 4: Delete existing note: DELETE "/api/notes/deletenote/:id". Login required
 router.delete("/deletenote/:id", fetchUser, async(req, res) => {
     try {
         let note = await Note.findById(req.params.id);
