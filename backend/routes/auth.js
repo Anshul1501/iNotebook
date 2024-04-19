@@ -13,7 +13,7 @@ router.post(
     "/createuser", [
         body("name", "Enter a valid name").isLength({ min: 3 }),
         body("email", "Enter a valid email").isEmail(),
-        body("password", "Password must be at least 5 characters").isLength({
+        body("password", "password must be at least 5 characters").isLength({
             min: 5,
         }),
     ],
@@ -67,9 +67,10 @@ router.post(
 router.post(
     "/login", [
         body("email", "Enter a valid email").isEmail(),
-        body("passowrd", "Password can not be blank").exists(),
+        body("password", "password can not be blank").exists(),
     ],
     async(req, res) => {
+        let success = false;
         //check for errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -80,29 +81,32 @@ router.post(
 
         const { email, password } = req.body;
         try {
-            let user = await user.findOne({ email });
-            if (!user) {
+            let foundUser = await User.findOne({ email });
+            if (!foundUser) {
+                success = false;
                 return res
                     .status(400)
-                    .json({ error: "please try to ogin with correct credentials" });
+                    .json({ success, error: "please try to login with correct credentials" });
             }
 
             // if user email is valid, compare password
-            const passwordCompare = await bcrypt.compare(password, user.password);
+            const passwordCompare = await bcrypt.compare(password, foundUser.password);
             if (!passwordCompare) {
+                success = false;
                 return res
                     .status(400)
-                    .json({ error: "Please try to login with correct credentials" });
+                    .json({ success, error: "Please try to login with correct credentials" });
             }
 
             //if password match the db
             const data = {
                 user: {
-                    id: user.id,
-                },
+                    id: foundUser.id,
+                }
             };
             const authtoken = jwt.sign(data, JWT_SECRET);
-            res.json({ authtoken });
+            success = true;
+            res.json({ success, authtoken });
         } catch (error) {
             console.log(error.message);
             res.status(500).send("some error occured");

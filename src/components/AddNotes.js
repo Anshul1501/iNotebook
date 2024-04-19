@@ -32,6 +32,7 @@ const AddNote = () => {
             name="title" // Add name attribute to match state key
             value={note.title} // Bind value to state
             onChange={onChange}
+            minLength={5} required
           />
         </div>
         <div className="mb-3">
@@ -45,6 +46,7 @@ const AddNote = () => {
             name="description" // Add name attribute to match state key
             value={note.description} // Bind value to state
             onChange={onChange}
+            minLength={5} required
           />
         </div>
         <div className="mb-3">
@@ -58,9 +60,10 @@ const AddNote = () => {
             name="tag" // Add name attribute to match state key
             value={note.tag} // Bind value to state
             onChange={onChange}
+            minLength={5} required
           />
         </div>
-        <button type="submit" className="btn btn-primary" onClick={handleOnSubmit}>
+        <button type="submit" className="btn btn-primary" onClick={handleOnSubmit} disabled={note.title.length < 5 || note.description.length < 5}>
           Add Note
         </button>
       </form>

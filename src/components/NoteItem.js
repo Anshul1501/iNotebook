@@ -3,8 +3,8 @@ import noteContext from "../context/notes/NoteContext";
 
 const NoteItem = (props) => {
   const { deleteNote } = useContext(noteContext);
-  const {note} = props;
-  
+  const {note, updateNote} = props;
+
   return (
     <div className="col-md-3" key={note._id}>
       <div className="card my-3">
@@ -15,6 +15,7 @@ const NoteItem = (props) => {
           <i
             className="fa-solid fa-pen-to-square"
             data-bs-toggle="modal" data-bs-target="#exampleModal"
+           // onClick={updateNote(note)}
           ></i>
           <i
             className="fa-solid fa-trash-can mx-2"
@@ -29,3 +30,5 @@ const NoteItem = (props) => {
 };
 
 export default NoteItem;
+
+//  data-bs-toggle="modal" data-bs-target="#exampleModal"

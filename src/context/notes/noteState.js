@@ -80,24 +80,29 @@ const NoteState = (props) => {
       {
         //end point update API
         method: "PUT",
-        header: {
+        headers: {
           "content-type": "application/json",
-          "auth-tokn": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViN2EwMTNhMWYwYWVmMjE1ZmFkMjQ1In0sImlhdCI6MTcwNjUzMjg4M30.aygcPRakRa4fOpjETiWh1x1bbGpegOtX23nIuBmNhnU"
+          "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjViN2EwMTNhMWYwYWVmMjE1ZmFkMjQ1In0sImlhdCI6MTcwNjUzMjg4M30.aygcPRakRa4fOpjETiWh1x1bbGpegOtX23nIuBmNhnU"
         },
         body: JSON.stringify({ title, description, tag })
       }
     );
 
     const json = response.json();
+    console.log(json);
+
+    let newNotes = JSON.parse(JSON.stringify(notes));
 
     for (let index = 0; index < notes.length; index++) {
       const element = notes[index];
       if (element._id === id) {
-        element.title = title;
-        element.description = description;
-        element.tag = tag;
+        notes[index].title = title;
+        notes[index].description = description;
+        notes[index].tag = tag;
+        break;
       }
     }
+    setNotes(newNotes);
   };
 
   return (
