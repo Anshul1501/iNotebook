@@ -29,10 +29,11 @@ const Navbar = () => {
       </ul>
 
 
-      <form className='d-flex'>
+      { !localStorage.getItem('token') ? ( <form className='d-flex'>
       <Link className="btn btn-primary mx-2" to="/login" role="button">Login</Link>
       <Link className="btn btn-primary mx-2" to="/singup" role="button">Singup</Link>
-      </form>
+      </form> ) : ( <button className='btn btn-primary mx-2' onClick={() => { localStorage.removeItem('token'); window.location.reload(); }}>Logout</button>
+)} 
 
     </div>
   </div>

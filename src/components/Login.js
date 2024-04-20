@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
 
-const Login = () => {
+const Login = (props) => {
     
     let navigate = useNavigate();
 
@@ -37,24 +37,27 @@ const Login = () => {
             
             // Handle successful login (e.g., redirect user to dashboard)
             if(json.success){
-                //save the auth token and redirect 
+               //save the auth token and redirect 
                 localStorage.setItem('token', json.authtoken);
-                navigate('/'); //navigate to home 
+                props.showAlert("Logged in Successfully", "success");
+                navigate('/'); //navigate to home
             }
             else {
-                alert("Invalid credentials");
+                props.showAlert("Invalid Credentials", "danger");
             }
 
         } catch (error) {
             console.error("Error logging in:", error.message);
+            props.showAlert("Invalid Credentials", "danger");
             // Handle error (e.g., display error message to the user)
         }
     };
 
     return (
         <div className='container my-5'>
+            <h2>Login to continue to iNotebook</h2>
             <form onSubmit={handleOnSubmit}>
-                <div className="form-group">
+                <div className="form-group my-3">
                     <label htmlFor="email">Email address</label>
                     <input type="email" className="form-control" id="email" aria-describedby="emailHelp" onChange={onChange} placeholder="Enter email" value={credentials.email}  />
                     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>

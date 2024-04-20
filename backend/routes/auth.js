@@ -18,16 +18,17 @@ router.post(
         }),
     ],
     async(req, res) => {
+        let success = false;
         // Validate the request body
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ success, errors: errors.array() });
         }
 
         //check if the user with the emial already exits
         let user = await User.findOne({ email: req.body.email });
         if (user) {
-            return req.status(400).json({ error: "User already exits" });
+            return req.status(400).json({ success, error: "User already exits" });
         }
 
         //store hash in password database
@@ -46,10 +47,14 @@ router.post(
                 const data = {
                     user: {
                         id: user.id,
-                    },
+                    }
                 };
+
                 const authtoken = jwt.sign(data, JWT_SECRET);
-                res.json(authtoken);
+
+                success = true;
+
+                res.json({ success, authtoken });
                 console.log(authtoken);
                 // res.json(user);
             })
@@ -57,7 +62,7 @@ router.post(
             .catch((err) => {
                 // Handle any errors that occur during user creation
                 console.error(err);
-                res.status(500).json({ error: "please enter a unique email" });
+                res.status(500).json({ success, error: "please enter a unique email" });
             });
     }
 );

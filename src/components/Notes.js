@@ -2,13 +2,21 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import NoteContext from "../context/notes/NoteContext";
 import NoteItem from "./NoteItem";
 import AddNotes from "./AddNotes";
+import { useNavigate } from "react-router-dom";
 
-const Notes = () => {
+const Notes = (props) => {
+
+  let navigate = useNavigate();
   const { notes, getNotes, editNote } = useContext(NoteContext); //destructring 
 
   useEffect(() => {
-    getNotes();
-  }, []); // Add getNotes to the dependency array
+    if(localStorage.getItem('token')){
+      getNotes();
+    }
+    else {
+      navigate("/login");
+    }
+  }, []);  // Add getNotes to the dependency array
 
   const [note, setNote] = useState({id: "", etitle: "", edescription: "", etag: "" });
 
@@ -27,7 +35,6 @@ const Notes = () => {
     console.log("id ", note.id);
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refClose.current.click();
-
   }
 
   const updateNote = (currentNote) => {
@@ -100,8 +107,8 @@ const Notes = () => {
             </div>
 
             <div className="modal-footer">
-              <button ref={refClose}type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" onClick={saveChangeNote}>Update Note</button>
+              <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary" onClick={()=>{saveChangeNote(); props.showAlert("Updated successfully", "success")}}>Update Note</button>
             </div>
           </div>
         </div>
